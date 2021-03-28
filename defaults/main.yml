@@ -1,0 +1,4 @@
+---
+
+journalbeat_version: 7
+journalbeat_output_logstash: "localhost:5044"

@@ -1,0 +1,26 @@
+---
+
+- name: Add Elastic APT key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Add Elastic APT repo
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ journalbeat_version }}.x/apt stable main"
+    filename: "elastic"
+
+- name: Install journalbeat
+  apt:
+    name: journalbeat
+
+- name: Copy journalbeat configuration
+  template:
+    src: journalbeat.yml.j2
+    dest: /etc/journalbeat/journalbeat.yml
+  notify: restart journalbeat
+
+- name: Enable and start journalbeat service
+  service:
+    name: journalbeat
+    state: started
+    enabled: true
